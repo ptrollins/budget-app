@@ -1,16 +1,16 @@
-import React from "react";
+import React from 'react';
 
-import Transactions from "./Transactions.jsx";
+import Transactions from './Transactions.jsx';
 
 class Budgets extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      budgetName: "",
-      budgetAmount: "",
-      currentlyEditing: "",
-      newBudgetName: "",
-      newBudgetAmount: "",
+      budgetName: '',
+      budgetAmount: '',
+      currentlyEditing: '',
+      newBudgetName: '',
+      newBudgetAmount: '',
     };
 
     this.handleFormChange = this.handleFormChange.bind(this);
@@ -31,7 +31,7 @@ class Budgets extends React.Component {
     const numbersValidation = /^[0-9\b]+$/;
 
     if (
-      event.target.value === "" ||
+      event.target.value === '' ||
       numbersValidation.test(event.target.value)
     ) {
       this.setState({
@@ -56,8 +56,8 @@ class Budgets extends React.Component {
       period: this.props.budgetPeriod,
     });
     this.setState({
-      budgetName: "",
-      budgetAmount: "",
+      budgetName: '',
+      budgetAmount: '',
     });
   }
 
@@ -70,9 +70,9 @@ class Budgets extends React.Component {
       newBudgetAmount: this.state.newBudgetAmount,
     });
     this.setState({
-      currentEditing: "",
-      newBudgetName: "",
-      newBudgetAmount: "",
+      currentEditing: '',
+      newBudgetName: '',
+      newBudgetAmount: '',
     });
   }
 
@@ -94,6 +94,7 @@ class Budgets extends React.Component {
               <Transactions
                 currentUser={this.props.currentUser}
                 budget={budget.name}
+                budgetAmount={budget.amount}
               />
               <hr></hr>
               <input
