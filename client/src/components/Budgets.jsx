@@ -1,132 +1,166 @@
 import React from "react";
-import axios from "axios";
 
-import PeriodBudgets from "./PeriodBudgets.jsx";
+import Transactions from "./Transactions.jsx";
 
 class Budgets extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: "monthly",
-      monthlyBudgets: [
-        {
-          username: "julia",
-          name: "Groceries",
-          amount: 200,
-          period: "monthly",
-        },
-        {
-          username: "julia",
-          name: "Dining Out",
-          amount: 100,
-          period: "monthly",
-        },
-      ],
-      yearlyBudgets: [
-        {
-          username: "julia",
-          name: "Vacations",
-          amount: 1000,
-          period: "yearly",
-        },
-      ],
+      budgetName: "",
+      budgetAmount: "",
+      currentlyEditing: "",
+      newBudgetName: "",
+      newBudgetAmount: "",
     };
 
-    this.createBudget = this.createBudget.bind(this);
+    this.handleFormChange = this.handleFormChange.bind(this);
+    this.handleNumbersFormChange = this.handleNumbersFormChange.bind(this);
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.handleEditChange = this.handleEditChange.bind(this);
+    this.handleEditSubmit = this.handleEditSubmit.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
-  // componentDidMount() {
-  //   this.getBudgets();
-  // }
-
-  createBudget(newBudget) {
-    axios
-      .post("/budgets", {
-        username: newBudget.currentUser,
-        name: newBudget.budgetName,
-        amount: newBudget.budgetAmount,
-        period: newBudget.budgetPeriod,
-      })
-      .then(() => {
-        this.getBudgets();
-      })
-      .catch((error) => console.log(error));
-  }
-
-  getBudgets(user) {
-    axios
-      .get(`/budgets?username=${user.username}`)
-      .then(({ data }) => {
-        var newMonthlyBudgets = this.state.monthlyBudgets.slice();
-        var newYearlyBudgets = this.state.yearlyBudgets.slice();
-        for (var budget in data) {
-          if (budget.period === "monthly") {
-            newMonthlyBudgets.push(budget);
-          } else if (budget.period === "yearly") {
-            newYearlyBudgets.push(budget);
-          }
-        }
-        this.setState({
-          monthlyBudgets: newMonthlyBudgets,
-          yearlyBudgets: newYearlyBudgets,
-        });
-      })
-      .catch((error) => console.log(error));
-  }
-
-  changeView(option) {
+  handleFormChange(event) {
     this.setState({
-      view: option,
+      [event.target.name]: event.target.value,
     });
   }
 
-  renderView() {
-    const { view } = this.state;
+  handleNumbersFormChange(event) {
+    const numbersValidation = /^[0-9\b]+$/;
 
-    if (view === "monthly") {
-      return (
-        <PeriodBudgets
-          currentUser={this.props.currentUser}
-          budgetPeriod={this.state.view}
-          budgets={this.state.monthlyBudgets}
-          createBudget={this.state.createBudget}
-        />
-      );
-    } else {
-      return (
-        <PeriodBudgets
-          currentUser={this.props.currentUser}
-          budgetPeriod={this.state.view}
-          budgets={this.state.yearlyBudgets}
-          createBudget={this.state.createBudget}
-        />
-      );
+    if (
+      event.target.value === "" ||
+      numbersValidation.test(event.target.value)
+    ) {
+      this.setState({
+        [event.target.name]: event.target.value,
+      });
     }
+  }
+
+  handleEditChange(currentlyEditing, event) {
+    this.setState({
+      currentlyEditing: currentlyEditing,
+      [event.target.name]: event.target.value,
+    });
+  }
+
+  handleFormSubmit(event) {
+    event.preventDefault();
+    this.props.createBudget({
+      username: this.props.currentUser,
+      name: this.state.budgetName,
+      amount: this.state.budgetAmount,
+      period: this.props.budgetPeriod,
+    });
+    this.setState({
+      budgetName: "",
+      budgetAmount: "",
+    });
+  }
+
+  handleEditSubmit(event) {
+    event.preventDefault();
+    this.props.editBudget({
+      username: this.props.currentUser,
+      oldBudgetName: this.state.currentlyEditing,
+      newBudgetName: this.state.newBudgetName,
+      newBudgetAmount: this.state.newBudgetAmount,
+    });
+    this.setState({
+      currentEditing: "",
+      newBudgetName: "",
+      newBudgetAmount: "",
+    });
+  }
+
+  handleDelete(budget) {
+    this.props.deleteBudget(budget);
   }
 
   render() {
     return (
-      <div>
-        <div className="subNav">
-          <span
-            className={
-              this.state.view === "monthly" ? "nav-selected" : "nav-unselected"
-            }
-            onClick={() => this.changeView("monthly", [])}
-          >
-            Monthly
-          </span>
-          <span
-            className={
-              this.state.view === "yearly" ? "nav-selected" : "nav-unselected"
-            }
-            onClick={() => this.changeView("yearly", [])}
-          >
-            Yearly
-          </span>
-        </div>
+      <div className="create">
+        <div className="create-editor">
+          <h2>{this.props.budgetPeriod} BUDGET</h2>
+          <div>
+            {this.props.budgets.map((budget) => (
+              <li className="feed-list-item">
+                <div className="feed-list-item-title">{budget.name}</div>
+                <div className="feed-list-item-byline">
+                  ${budget.amount} total
+                </div>
+                <Transactions
+                  currentUser={this.props.currentUser}
+                  budget={budget.name}
+                />
+                <form>
+                  <input
+                    className="create-budget-input"
+                    type="text"
+                    placeholder={budget.name}
+                    name="newBudgetName"
+                    value={this.state.newBudgetName}
+                    onChange={(event) =>
+                      this.handleEditChange(budget.name, event)
+                    }
+                  ></input>
+                  <input
+                    className="create-budget-input"
+                    type="text"
+                    placeholder={budget.amount}
+                    name="newBudgetAmount"
+                    value={this.state.newBudgetAmount}
+                    onChange={(event) =>
+                      this.handleEditChange(budget.name, event)
+                    }
+                  ></input>
+                  <button
+                    className="create-submit-button"
+                    type="submit"
+                    onClick={(event) => this.handleEditSubmit(event)}
+                  >
+                    Edit Budget
+                  </button>
+                </form>
+                <button
+                  className="create-submit-button"
+                  onClick={() => this.handleDelete(budget)}
+                >
+                  x
+                </button>
+              </li>
+            ))}
+          </div>
 
-        <div className="main">{this.renderView()}</div>
+          <form className="feed-list-item">
+            <input
+              className="create-budget-input"
+              type="text"
+              placeholder="Name"
+              name="budgetName"
+              value={this.state.budgetName}
+              onChange={(event) => this.handleFormChange(event)}
+            ></input>
+            <input
+              className="create-budget-input"
+              type="text"
+              placeholder="Amount"
+              name="budgetAmount"
+              value={this.state.budgetAmount}
+              onChange={(event) => this.handleNumbersFormChange(event)}
+            ></input>
+            <button
+              className="create-submit-button"
+              type="submit"
+              onClick={this.handleFormSubmit}
+            >
+              Add Budget
+            </button>
+          </form>
+        </div>
       </div>
     );
   }

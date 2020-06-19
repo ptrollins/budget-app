@@ -1,16 +1,16 @@
-var { budgets, transactions, users } = require('./controllers');
-var router = require('express').Router();
+var { budgets, transactions, users } = require("./controllers");
+var router = require("express").Router();
 
-// Budgets
-router.get('/budgets', budgets.get);
-router.post('/budgets', budgets.post);
+router.get("/budgets", budgets.get);
+router.post("/budgets", budgets.post);
+router.put("/budgets", budgets.put);
+router.delete("/budgets", budgets.delete);
 
-// Transactions
-router.get('/transactions', transactions.get);
-router.post('/transactions', transactions.post);
+router.get("/transactions", transactions.get);
+router.post("/transactions", transactions.post);
+router.delete("/transactions", transactions.delete);
 
-// Users
-router.get('/users', users.get);
-router.post('/users', users.post);
+router.get("/users", users.get);
+router.post("/users", users.post);
 
 module.exports = router;

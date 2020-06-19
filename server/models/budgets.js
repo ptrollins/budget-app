@@ -1,34 +1,36 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
 const BudgetsSchema = new Schema(
   {
-    user: { type: Schema.Types.ObjectId, ref: 'Users', unique: true },
-    category: String,
+    username: String,
+    name: String,
     amount: Number,
     period: String,
-    end: Date,
   },
   {
     timestamps: true,
   }
 );
 
-const Budgets = mongoose.model('Budgets', BudgetsSchema);
+const Budgets = mongoose.model("Budgets", BudgetsSchema);
 
-module.exports.getBudgetsByUser = ({ _id }) => {
-  return Budgets.find({ user: _id }).exec();
+module.exports.getBudgetsByUser = (username) => {
+  return Budgets.find({ username: username }).exec();
 };
 
 module.exports.createBudget = (budget) => {
   return Budgets.create(budget);
 };
 
-module.exports.updateBudget = (budget) => {
+module.exports.updateBudget = (replacementInfo) => {
   return Budgets.findOneAndUpdate(
-    { user: budget.user, category: budget.category },
-    budget,
+    { username: replacementInfo.username, name: replacementInfo.oldBudgetName },
+    {
+      name: replacementInfo.newBudgetName,
+      amount: replacementInfo.newBudgetAmount,
+    },
     {
       new: true,
       useFindAndModify: false,
@@ -36,6 +38,9 @@ module.exports.updateBudget = (budget) => {
   ).exec();
 };
 
-module.exports.deleteBudget = (budget) => {
-  return Budgets.deleteOne(budget);
+module.exports.deleteBudget = (query) => {
+  return Budgets.deleteOne({
+    name: query.name,
+    username: query.username,
+  }).exec();
 };
