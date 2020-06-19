@@ -30,35 +30,33 @@ class SignUp extends React.Component {
 
   render() {
     return (
-      <div className="create">
-        <div className="create-editor">
-          <h2>SIGN UP</h2>
-          <form>
-            <input
-              className="create-input"
-              type="text"
-              placeholder="Username"
-              name="username"
-              value={this.state.username}
-              onChange={(event) => this.handleFormChange(event)}
-            ></input>
-            <input
-              className="create-input"
-              type="text"
-              placeholder="Password"
-              name="password"
-              value={this.state.password}
-              onChange={(event) => this.handleFormChange(event)}
-            ></input>
-            <button
-              className="create-submit-button"
-              type="submit"
-              onClick={this.handleFormSubmit}
-            >
-              Sign Up
-            </button>
-          </form>
-        </div>
+      <div className="login-box">
+        <form>
+          <h2>Sign Up</h2>
+          <input
+            className="create-input"
+            type="login"
+            placeholder="Username"
+            name="username"
+            value={this.state.username}
+            onChange={(event) => this.handleFormChange(event)}
+          ></input>
+          <input
+            className="create-input"
+            type="password"
+            placeholder="Password"
+            name="password"
+            value={this.state.password}
+            onChange={(event) => this.handleFormChange(event)}
+          ></input>
+          <button
+            className="create-submit-button"
+            type="submit"
+            onClick={this.handleFormSubmit}
+          >
+            Sign Up
+          </button>
+        </form>
       </div>
     );
   }
