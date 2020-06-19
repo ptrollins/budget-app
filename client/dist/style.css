@@ -9,8 +9,9 @@ body {
 }
 
 h2 {
-  color: #2c3e50;
-  text-transform: uppercase;
+  font-family: "PT Serif", sans-serif;
+  color: #4c5559;
+  text-transform: capitalize;
 }
 
 form {
@@ -19,6 +20,18 @@ form {
   border-radius: 4px;
   padding: 30px 50px 30px 50px;
   box-shadow: 0 0 1em #80808066;
+}
+
+hr {
+  clear: both;
+  margin-top: 0px;
+  margin-bottom: 50px;
+}
+
+.edit-budget-box {
+  background-color: #fdfdfd;
+  border-radius: 4px;
+  padding: 30px 50px 30px 50px;
 }
 
 .feed-list-item {
@@ -32,6 +45,13 @@ form {
   box-shadow: 0 0 1em #80808066;
 }
 
+.add-item-box {
+  height: 70px;
+  list-style: none;
+  border-radius: 4px;
+  padding: 10px 50px 30px 0px;
+}
+
 .feed-list-item-image {
   float: left;
   width: 100%;
@@ -42,7 +62,7 @@ form {
 
 .feed-list-item-title {
   font-size: 1.8em;
-  font-family: "Francois One";
+  font-family: "PT Serif", sans-serif;
   margin-bottom: 10px;
 }
 
@@ -66,9 +86,21 @@ button {
   border: none;
   border-radius: 3px;
   padding: 20px 20px 40px 20px;
-  font-family: "PT Serif", sans-serif;
-  color: #2c3e50;
-  background-color: #ecf0f1;
+  display: inline-block;
+  width: 60%;
+  margin: auto;
+  margin-bottom: 20px;
+  font-family: "Roboto", sans-serif;
+  letter-spacing: 1.1px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #1b9db5;
+  transition: all 0.2s ease 0s;
+}
+
+button:hover {
+  background-color: #84d3e0;
 }
 
 .post {
@@ -100,15 +132,16 @@ button {
   font-weight: bolder;
 }
 
-.create h2 {
-  border-bottom: 1px solid #777777;
-  width: 90%;
-  font-family: "Francois One";
+.login-box {
+  width: 40%;
+  margin: auto;
+  padding-top: 50px;
 }
 
 .create-editor {
-  width: 40%;
-  float: left;
+  width: 80%;
+  margin: auto;
+  padding-top: 50px;
 }
 
 .create-preview {
@@ -150,10 +183,31 @@ button {
   resize: none;
 }
 
+.transaction-info {
+  width: 80%;
+  float: left;
+}
+
 .create-submit-button {
-  margin: 15px;
+  margin: 0px 15px;
   font-size: 0.9em;
   height: 20px;
+}
+
+.edit-budget-button {
+  float: left;
+  width: 140px;
+  margin-left: 20px;
+  font-size: 0.8em;
+  padding: 15px;
+}
+
+.delete-button {
+  background-color: lightgrey;
+  width: 50px;
+  margin-left: 20px;
+  font-size: 0.8em;
+  padding: 15px;
 }
 
 .create-budget-button {
@@ -181,7 +235,7 @@ button {
 .comment-entry {
   margin-top: 5px;
   padding: 10px;
-  border: 1px solid #3498db;
+  border: 1px solid white;
   list-style: none;
   width: 70%;
   font-size: 0.9em;
@@ -193,7 +247,7 @@ button {
 
 .post-list-entry {
   list-style: none;
-  border: 1px solid #3498db;
+  border: 1px solid white;
   margin-bottom: 20px;
   padding: 10px;
   width: 75%;
@@ -202,12 +256,6 @@ button {
 .post-list-entry:hover {
   cursor: pointer;
   background-color: rgba(52, 152, 219, 0.17);
-}
-
-.post-list-entry-title {
-  font-weight: bold;
-  font-size: 1.2em;
-  font-family: "Francois One";
 }
 
 .post-list-entry-stats {
@@ -234,7 +282,7 @@ button {
   margin-right: auto;
   margin-left: 10px;
   font-family: "Francois One";
-  color: #ffffff;
+  color: #4c5559;
 }
 
 .main {
@@ -243,7 +291,7 @@ button {
 }
 
 .nav {
-  background-color: #3498db;
+  background-color: white;
   margin: 0px;
   padding: 10px;
   display: flex;
@@ -254,13 +302,14 @@ button {
 
 .nav-selected {
   padding: 5px;
-  color: white;
+  color: #4c5559;
   font-weight: bold;
   margin-right: 5px;
   font-size: 1.1em;
 }
 
 .nav-unselected {
+  color: #9fa4a6;
   padding: 5px;
   margin-right: 5px;
   font-size: 1.1em;
@@ -293,4 +342,19 @@ button {
 
 .feed {
   padding: 0px 10% 0px 10%;
+}
+
+input[type="login"] {
+  float: left;
+}
+
+input[type="text"] {
+  margin-right: 20px;
+  margin-bottom: 20px;
+  float: left;
+  width: 20%;
+}
+
+input[type="password"] {
+  -webkit-text-security: circle;
 }
