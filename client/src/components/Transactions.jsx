@@ -81,18 +81,22 @@ class Transactions extends React.Component {
   }
 
   handleFormSubmit(event) {
-    event.preventDefault();
-    this.addTransaction({
-      username: this.props.currentUser,
-      budget: this.props.budget,
-      name: this.state.transactionName,
-      amount: this.state.transactionAmount,
-      period: this.props.budgetPeriod,
-    });
-    this.setState({
-      transactionName: "",
-      transactionAmount: "",
-    });
+    console.log("key pressed");
+    console.log(event);
+    console.log(event.which);
+    if (event.which == 13) {
+      this.addTransaction({
+        username: this.props.currentUser,
+        budget: this.props.budget,
+        name: this.state.transactionName,
+        amount: this.state.transactionAmount,
+        period: this.props.budgetPeriod,
+      });
+      this.setState({
+        transactionName: "",
+        transactionAmount: "",
+      });
+    }
   }
 
   handleDelete(transaction) {
@@ -102,21 +106,20 @@ class Transactions extends React.Component {
   render() {
     return (
       <div>
-        <h4>Transaction List</h4>
         {this.state.transactions.map((transaction) => (
           <div>
-            <p>
+            <p className="transaction-info">
               {transaction.name}, ${transaction.amount}
             </p>
             <button
-              className="create-submit-button"
+              className="delete-button"
               onClick={() => this.handleDelete(transaction)}
             >
               x
             </button>
           </div>
         ))}
-        <form className="feed-list-item">
+        <div className="add-item-box">
           <input
             className="create-budget-input"
             type="text"
@@ -132,15 +135,9 @@ class Transactions extends React.Component {
             name="transactionAmount"
             value={this.state.transactionAmount}
             onChange={(event) => this.handleNumbersFormChange(event)}
+            onKeyPress={(event) => this.handleFormSubmit(event)}
           ></input>
-          <button
-            className="create-submit-button"
-            type="submit"
-            onClick={this.handleFormSubmit}
-          >
-            Add Transaction
-          </button>
-        </form>
+        </div>
       </div>
     );
   }

@@ -82,85 +82,78 @@ class Budgets extends React.Component {
 
   render() {
     return (
-      <div className="create">
-        <div className="create-editor">
-          <h2>{this.props.budgetPeriod} BUDGET</h2>
-          <div>
-            {this.props.budgets.map((budget) => (
-              <li className="feed-list-item">
-                <div className="feed-list-item-title">{budget.name}</div>
-                <div className="feed-list-item-byline">
-                  ${budget.amount} total
-                </div>
-                <Transactions
-                  currentUser={this.props.currentUser}
-                  budget={budget.name}
-                />
-                <form>
-                  <input
-                    className="create-budget-input"
-                    type="text"
-                    placeholder={budget.name}
-                    name="newBudgetName"
-                    value={this.state.newBudgetName}
-                    onChange={(event) =>
-                      this.handleEditChange(budget.name, event)
-                    }
-                  ></input>
-                  <input
-                    className="create-budget-input"
-                    type="text"
-                    placeholder={budget.amount}
-                    name="newBudgetAmount"
-                    value={this.state.newBudgetAmount}
-                    onChange={(event) =>
-                      this.handleEditChange(budget.name, event)
-                    }
-                  ></input>
-                  <button
-                    className="create-submit-button"
-                    type="submit"
-                    onClick={(event) => this.handleEditSubmit(event)}
-                  >
-                    Edit Budget
-                  </button>
-                </form>
-                <button
-                  className="create-submit-button"
-                  onClick={() => this.handleDelete(budget)}
-                >
-                  x
-                </button>
-              </li>
-            ))}
-          </div>
-
-          <form className="feed-list-item">
-            <input
-              className="create-budget-input"
-              type="text"
-              placeholder="Name"
-              name="budgetName"
-              value={this.state.budgetName}
-              onChange={(event) => this.handleFormChange(event)}
-            ></input>
-            <input
-              className="create-budget-input"
-              type="text"
-              placeholder="Amount"
-              name="budgetAmount"
-              value={this.state.budgetAmount}
-              onChange={(event) => this.handleNumbersFormChange(event)}
-            ></input>
-            <button
-              className="create-submit-button"
-              type="submit"
-              onClick={this.handleFormSubmit}
-            >
-              Add Budget
-            </button>
-          </form>
+      <div className="create-editor">
+        <h2>{this.props.budgetPeriod} Budgets</h2>
+        <div>
+          {this.props.budgets.map((budget) => (
+            <li className="feed-list-item">
+              <h2>{budget.name}</h2>
+              <div className="feed-list-item-byline">
+                ${budget.amount} total
+              </div>
+              <Transactions
+                currentUser={this.props.currentUser}
+                budget={budget.name}
+              />
+              <hr></hr>
+              <input
+                className="create-budget-input"
+                type="text"
+                placeholder={budget.name}
+                name="newBudgetName"
+                value={this.state.newBudgetName}
+                onChange={(event) => this.handleEditChange(budget.name, event)}
+              ></input>
+              <input
+                className="create-budget-input"
+                type="text"
+                placeholder={budget.amount}
+                name="newBudgetAmount"
+                value={this.state.newBudgetAmount}
+                onChange={(event) => this.handleEditChange(budget.name, event)}
+              ></input>
+              <button
+                className="edit-budget-button"
+                type="submit"
+                onClick={(event) => this.handleEditSubmit(event)}
+              >
+                Edit Budget
+              </button>
+              <button
+                className="delete-button"
+                onClick={() => this.handleDelete(budget)}
+              >
+                x
+              </button>
+            </li>
+          ))}
         </div>
+
+        <form className="feed-list-item">
+          <input
+            className="create-budget-input"
+            type="text"
+            placeholder="Name"
+            name="budgetName"
+            value={this.state.budgetName}
+            onChange={(event) => this.handleFormChange(event)}
+          ></input>
+          <input
+            className="create-budget-input"
+            type="text"
+            placeholder="Amount"
+            name="budgetAmount"
+            value={this.state.budgetAmount}
+            onChange={(event) => this.handleNumbersFormChange(event)}
+          ></input>
+          <button
+            className="edit-budget-button"
+            type="submit"
+            onClick={this.handleFormSubmit}
+          >
+            Add Budget
+          </button>
+        </form>
       </div>
     );
   }
