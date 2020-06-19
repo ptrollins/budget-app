@@ -1,35 +1,33 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const TransactionsSchema = new Schema({
-  user: { type: Schema.Types.ObjectId, ref: 'Users', unique: true },
-  category: String,
-  amount: Number,
-  date: Date,
-});
+const TransactionsSchema = new Schema(
+  {
+    username: String,
+    budget: String,
+    name: String,
+    budget: String,
+    amount: Number,
+  },
+  {
+    timestamps: true,
+  }
+);
 
-const Transactions = mongoose.model('Transactions', TransactionsSchema);
+const Transactions = mongoose.model("Transactions", TransactionsSchema);
 
-module.exports.getTransactionsByUser = ({ _id }) => {
-  return Transactions.find({ user: _id }).exec();
+module.exports.getTransactionsByUser = (query) => {
+  return Transactions.find({
+    username: query.username,
+    budget: query.budget,
+  }).exec();
 };
 
 module.exports.createTransaction = (transaction) => {
   return Transactions.create(transaction);
 };
 
-module.exports.updateTransaction = ({ _id, category }) => {
-  return Transactions.findOneAndUpdate(
-    { user: _id },
-    { $push: { Transactions: category } },
-    {
-      new: true,
-      useFindAndModify: false,
-    }
-  ).exec();
-};
-
-module.exports.deleteBudget = (budget) => {
-  return Transactions.deleteOne(budget);
+module.exports.deleteTransaction = (budget) => {
+  return Transactions.deleteOne(budget).exec();
 };

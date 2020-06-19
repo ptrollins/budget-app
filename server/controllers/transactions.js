@@ -1,55 +1,38 @@
-var { transactions } = require('../models');
+var { transactions } = require("../models");
 
 module.exports = {
   get: (req, res) => {
-    let user = req.query.user;
     transactions
-      .getTransactionsByUser(user)
+      .getTransactionsByUser(req.query)
       .then((transactions) => {
-        console.log('get transactions success: ', transactions);
         res.status(200).send(transactions);
       })
       .catch((err) => {
-        console.log('getTransactions: ', err);
+        console.log(err);
         res.sendStatus(500);
       });
   },
 
   post: (req, res) => {
     transactions
-      .createTransaction()
-      .then((transactions) => {
-        console.log('post transaction success: ', transactions);
-        res.status(201);
+      .createTransaction(req.body)
+      .then(() => {
+        res.sendStatus(201);
       })
       .catch((err) => {
-        console.log('createTransaction: ', err);
-        res.sendStatus(500);
-      });
-  },
-
-  put: (req, res) => {
-    transactions
-      .updateTransaction()
-      .then((transactions) => {
-        console.log('post transaction success: ', transactions);
-        res.status(201);
-      })
-      .catch((err) => {
-        console.log('updateTransaction: ', err);
+        console.log(err);
         res.sendStatus(500);
       });
   },
 
   delete: (req, res) => {
     transactions
-      .deleteTransaction()
-      .then((transactions) => {
-        console.log('delete transaction success: ', transactions);
-        res.status(200);
+      .deleteTransaction(req.query)
+      .then(() => {
+        res.sendStatus(200);
       })
       .catch((err) => {
-        console.log('deleteTransaction: ', err);
+        console.log(err);
         res.sendStatus(500);
       });
   },

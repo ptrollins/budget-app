@@ -1,20 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import axios from 'axios';
+import React from "react";
+import ReactDOM from "react-dom";
+import axios from "axios";
 
-import Login from './components/Login.jsx';
-import SignUp from './components/SignUp.jsx';
-import Budget from './components/Budgets.jsx';
-import Profile from './components/Profile.jsx';
+import Login from "./components/Login.jsx";
+import SignUp from "./components/SignUp.jsx";
+import Period from "./components/Period.jsx";
+import Profile from "./components/Profile.jsx";
 
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      view: 'budget',
-      loginView: 'login',
-      isLoggedIn: true,
-      currentUser: 'julia',
+      view: "budgets",
+      loginView: "login",
+      isLoggedIn: false,
+      currentUser: "",
     };
 
     this.loginUser = this.loginUser.bind(this);
@@ -28,30 +28,29 @@ class App extends React.Component {
       .then(({ data }) => {
         this.setState({
           isLoggedIn: true,
-          currentRole: data.role,
           currentUser: data.username,
         });
       })
-      .catch((error) => console.log('User has entered the wrong information.'));
+      .catch((error) => console.log("User has entered the wrong information."));
   }
 
   logoutUser() {
     this.setState({
       isLoggedIn: false,
-      currentRole: '',
+      currentRole: "",
     });
   }
 
   createUser(user) {
     axios
-      .post('/users', {
+      .post("/users", {
         username: user.username,
         password: user.password,
         role: user.role,
       })
       .then(() => {
         this.setState({
-          loginView: 'login',
+          loginView: "login",
         });
       })
       .catch((error) => console.log(error));
@@ -72,7 +71,7 @@ class App extends React.Component {
   renderLoginView() {
     const { loginView } = this.state;
 
-    if (loginView === 'login') {
+    if (loginView === "login") {
       return <Login loginUser={this.loginUser} />;
     } else {
       return <SignUp createUser={this.createUser} />;
@@ -82,10 +81,10 @@ class App extends React.Component {
   renderView() {
     const { view } = this.state;
 
-    if (view === 'profile') {
+    if (view === "profile") {
       return <Profile currentUser={this.state.currentUser} />;
     } else {
-      return <Budget currentUser={this.state.currentUser} />;
+      return <Period currentUser={this.state.currentUser} />;
     }
   }
 
@@ -98,21 +97,21 @@ class App extends React.Component {
               <span className="logo">Budget Tracker</span>
               <span
                 className={
-                  this.state.loginView === 'login'
-                    ? 'nav-selected'
-                    : 'nav-unselected'
+                  this.state.loginView === "login"
+                    ? "nav-selected"
+                    : "nav-unselected"
                 }
-                onClick={() => this.changeLoginView('login', [])}
+                onClick={() => this.changeLoginView("login", [])}
               >
                 Login
               </span>
               <span
                 className={
-                  this.state.loginView === 'signUp'
-                    ? 'nav-selected'
-                    : 'nav-unselected'
+                  this.state.loginView === "signUp"
+                    ? "nav-selected"
+                    : "nav-unselected"
                 }
-                onClick={() => this.changeLoginView('signUp', [])}
+                onClick={() => this.changeLoginView("signUp", [])}
               >
                 Sign Up
               </span>
@@ -124,32 +123,32 @@ class App extends React.Component {
             <div className="nav">
               <span
                 className="logo"
-                onClick={() => this.changeView('budget', [])}
+                onClick={() => this.changeView("budgets", [])}
               >
                 Budget Tracker
               </span>
               <span
                 className={
-                  this.state.view === 'budget'
-                    ? 'nav-selected'
-                    : 'nav-unselected'
+                  this.state.view === "budgets"
+                    ? "nav-selected"
+                    : "nav-unselected"
                 }
-                onClick={() => this.changeView('budget', [])}
+                onClick={() => this.changeView("budgets", [])}
               >
-                Budget
+                Budgets
               </span>
               <span
                 className={
-                  this.state.view === 'profile'
-                    ? 'nav-selected'
-                    : 'nav-unselected'
+                  this.state.view === "profile"
+                    ? "nav-selected"
+                    : "nav-unselected"
                 }
-                onClick={() => this.changeView('profile', [])}
+                onClick={() => this.changeView("profile", [])}
               >
                 Profile
               </span>
               <span
-                className={'nav-unselected'}
+                className={"nav-unselected"}
                 onClick={() => this.logoutUser()}
               >
                 Logout
@@ -164,4 +163,4 @@ class App extends React.Component {
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));

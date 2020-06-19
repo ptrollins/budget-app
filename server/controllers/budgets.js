@@ -1,55 +1,50 @@
-var { budgets } = require('../models');
+var { budgets } = require("../models");
 
 module.exports = {
   get: (req, res) => {
-    let user = req.query.user;
     budgets
-      .getBudgetsByUser(user)
+      .getBudgetsByUser(req.query.username)
       .then((budgets) => {
-        console.log('get budgets success: ', budgets);
         res.status(200).send(budgets);
       })
       .catch((err) => {
-        console.log('getBudgets: ', err);
+        console.log(err);
         res.sendStatus(500);
       });
   },
 
   post: (req, res) => {
     budgets
-      .createBudget()
-      .then((budgets) => {
-        console.log('post budgets success: ', budgets);
-        res.status(201);
+      .createBudget(req.body)
+      .then(() => {
+        res.sendStatus(201);
       })
       .catch((err) => {
-        console.log('createBudget: ', err);
+        console.log(err);
         res.sendStatus(500);
       });
   },
 
   put: (req, res) => {
     budgets
-      .updateBudget()
-      .then((budgets) => {
-        console.log('post budgets success: ', budgets);
-        res.status(201);
+      .updateBudget(req.body)
+      .then(() => {
+        res.sendStatus(201);
       })
       .catch((err) => {
-        console.log('updateBudget: ', err);
+        console.log(err);
         res.sendStatus(500);
       });
   },
 
   delete: (req, res) => {
     budgets
-      .deleteBudget()
-      .then((budgets) => {
-        console.log('delete budgets success: ', budgets);
-        res.status(200);
+      .deleteBudget(req.query)
+      .then(() => {
+        res.sendStatus(200);
       })
       .catch((err) => {
-        console.log('deleteBudget: ', err);
+        console.log(err);
         res.sendStatus(500);
       });
   },

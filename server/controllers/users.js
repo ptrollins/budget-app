@@ -1,58 +1,31 @@
-var { users } = require('../models');
+var { users } = require("../models");
 
 module.exports = {
   get: (req, res) => {
-    console.log('In users get');
-    const username = req.query.username;
     users
-      .getUser(username)
-      .then((users) => {
-        console.log('get users success: ', users);
-        res.status(200).send(users);
+      .getUser(req.query.username)
+      .then((user) => {
+        if (user.password === req.query.password) {
+          res.status(200).send(user);
+        } else {
+          res.sendStatus(403);
+        }
       })
       .catch((err) => {
-        console.log('getUser: ', err);
-        res.sendStatus(500);
+        console.log(err);
+        res.sendStatus(403);
       });
   },
 
   post: (req, res) => {
-    const user = req.body;
     users
-      .createUser(user)
-      .then((users) => {
-        console.log('post users success: ', users);
-        res.status(201);
+      .createUser(req.body)
+      .then(() => {
+        res.sendStatus(201);
       })
       .catch((err) => {
-        console.log('createUser: ', err);
+        console.log(err);
         res.sendStatus(500);
       });
   },
-
-  // put: (req, res) => {
-  //   users
-  //     .updateUser()
-  //     .then((users) => {
-  //       console.log('post users success: ', users);
-  //       res.status(201);
-  //     })
-  //     .catch((err) => {
-  //       console.log('updateUser: ', err);
-  //       res.sendStatus(500);
-  //     });
-  // },
-
-  // delete: (req, res) => {
-  //   users
-  //     .deleteUser()
-  //     .then((users) => {
-  //       console.log('delete users success: ', users);
-  //       res.status(200);
-  //     })
-  //     .catch((err) => {
-  //       console.log('deleteUser: ', err);
-  //       res.sendStatus(500);
-  //     });
-  // },
 };
