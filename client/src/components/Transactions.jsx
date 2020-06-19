@@ -1,13 +1,14 @@
-import React from "react";
-import axios from "axios";
+import React from 'react';
+import axios from 'axios';
 
 class Transactions extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       transactions: [],
-      transactionName: "",
-      transactionAmount: "",
+      transactionName: '',
+      transactionAmount: '',
+      budgetRemaining: 0,
     };
 
     this.addTransaction = this.addTransaction.bind(this);
@@ -30,7 +31,7 @@ class Transactions extends React.Component {
 
   addTransaction(newTransaction) {
     axios
-      .post("/transactions", newTransaction)
+      .post('/transactions', newTransaction)
       .then(() => {
         this.getTransactions();
       })
@@ -54,10 +55,13 @@ class Transactions extends React.Component {
         `/transactions?username=${this.props.currentUser}&budget=${this.props.budget}`
       )
       .then(({ data }) => {
-        this.setState({
-          transactions: data,
-        });
+        Promise.resolve(
+          this.setState({
+            transactions: data,
+          })
+        );
       })
+      .then(() => this.setBudgetRemaining())
       .catch((error) => console.log(error));
   }
 
@@ -71,7 +75,7 @@ class Transactions extends React.Component {
     const numbersValidation = /^[0-9\b]+$/;
 
     if (
-      event.target.value === "" ||
+      event.target.value === '' ||
       numbersValidation.test(event.target.value)
     ) {
       this.setState({
@@ -81,6 +85,7 @@ class Transactions extends React.Component {
   }
 
   handleFormSubmit(event) {
+<<<<<<< HEAD
     console.log("key pressed");
     console.log(event);
     console.log(event.which);
@@ -97,15 +102,46 @@ class Transactions extends React.Component {
         transactionAmount: "",
       });
     }
+=======
+    event.preventDefault();
+    this.addTransaction({
+      username: this.props.currentUser,
+      budget: this.props.budget,
+      name: this.state.transactionName,
+      amount: this.state.transactionAmount,
+      period: this.props.budgetPeriod,
+    });
+    this.setState({
+      transactionName: '',
+      transactionAmount: '',
+    });
+>>>>>>> Calculate and display budget remaining
   }
 
   handleDelete(transaction) {
     this.deleteTransaction(transaction);
   }
 
+  setBudgetRemaining() {
+    let transaction,
+      transactionTotal = 0;
+    for (transaction of this.state.transactions) {
+      transactionTotal += transaction.amount;
+    }
+    this.setState({
+      budgetRemaining: this.props.budgetAmount - transactionTotal,
+    });
+  }
+
   render() {
     return (
       <div>
+<<<<<<< HEAD
+=======
+        <div className="feed-list-item" ref="canvas"></div>
+        <div className="feed-list-item">{this.state.budgetRemaining}</div>
+        <h4>Transaction List</h4>
+>>>>>>> Calculate and display budget remaining
         {this.state.transactions.map((transaction) => (
           <div>
             <p className="transaction-info">
